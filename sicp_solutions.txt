@@ -1,0 +1,19 @@
+Title: SICP Excercise Solutions
+Author: Pieter Kuijpers
+
+Exercise 1.2
+( / (+ 5 4 (- 2 (+ 6 (/ 4 5)))) (* 3 (- 6 2) (- 2 7)))
+
+Exercise 1.3
+(define (square x) (* x x))
+
+(define (first-smallest x y z)
+  (and (<= x y) (<= x z))
+)
+
+(define (sum-square-two-largest x y z)
+  (cond ((first-smallest x y z) (+ (square y) (square z)))
+        ((first-smallest y x z) (+ (square x) (square z)))
+        (else (+ (square x) (square y)))
+  )
+)
