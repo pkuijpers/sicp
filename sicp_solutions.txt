@@ -1,19 +1,71 @@
 Title: SICP Excercise Solutions
 Author: Pieter Kuijpers
 
-Exercise 1.2
-( / (+ 5 4 (- 2 (+ 6 (/ 4 5)))) (* 3 (- 6 2) (- 2 7)))
+## Exercise 1.2 ##
 
-Exercise 1.3
-(define (square x) (* x x))
+    ( / (+ 5 4 (- 2 (+ 6 (/ 4 5)))) (* 3 (- 6 2) (- 2 7)))
 
-(define (first-smallest x y z)
-  (and (<= x y) (<= x z))
-)
+## Exercise 1.3 ##
 
-(define (sum-square-two-largest x y z)
-  (cond ((first-smallest x y z) (+ (square y) (square z)))
-        ((first-smallest y x z) (+ (square x) (square z)))
-        (else (+ (square x) (square y)))
-  )
-)
+    (define (square x) (* x x))
+
+    (define (first-smallest x y z)
+      (and (<= x y) (<= x z))
+    )
+
+    (define (sum-square-two-largest x y z)
+      (cond ((first-smallest x y z) (+ (square y) (square z)))
+            ((first-smallest y x z) (+ (square x) (square z)))
+            (else (+ (square x) (square y)))
+      )
+    )
+    
+## Exercise 1.4 ##
+
+If b > 0 then a + b, else a - b  
+So `a + |b|`
+
+## Exercise 1.5 ##
+
+Applicative order: `(p)` is evaluated first, resulting in an infinite loop.
+
+Normal order: `(test 0 (p))` => `(if (= 0 0) 0 (p))` => `0`
+
+## Exercise 1.6 ##
+
+`new-if` is no special form, so its operands are evaluated first. The second
+operand will be evaluated for each interation, resulting in an infinite loop.
+
+## Exercise 1.7 ##
+
+If `x` itself is very small, the tolerance is relatively large compared with
+the number, resulting in a large relative error.
+
+    (good-enough? 0.01 0.001) => true
+
+For very large numbers, the precision of the tolerance is larger than the
+precision of the number.
+
+    (good-enough? (+ 3e6 0.0001) 9e12) => false
+    
+A better way: check that guess differs from previous-guess with at least 0.1% .
+
+    (define (good-enough? guess previous-guess)
+      (< (/ (abs (- previous-guess guess)) guess) 0.001))
+      
+    (define (sqrt-iter guess previous-guess x)
+      (if (good-enough? guess previous-guess)
+        guess
+        (sqrt-iter (improve guess x)
+          guess
+          x)))
+          
+    (define (sqrt x)
+      (sqrt-iter 1.0 2.0 x))
+      
+## Exercise 1.8 ##
+
+Only the function for generating a new guess needs to be updated:
+
+    (define (improve guess x)
+      (/ (+ (/ x (* guess guess)) (* 2 guess)) 3))
