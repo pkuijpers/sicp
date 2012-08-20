@@ -48,7 +48,8 @@ precision of the number.
 
     (good-enough? (+ 3e6 0.0001) 9e12) => false
     
-A better way: check that guess differs from previous-guess with at least 0.1% .
+A better way: check that guess differs from previous-guess with at least
+0.1% .
 
     (define (good-enough? guess previous-guess)
       (< (/ (abs (- previous-guess guess)) guess) 0.001))
@@ -69,3 +70,135 @@ Only the function for generating a new guess needs to be updated:
 
     (define (improve guess x)
       (/ (+ (/ x (* guess guess)) (* 2 guess)) 3))
+
+## Exercise 1.9 ##
+
+First case is recursive:
+
+    (+ 4 5)
+    (inc (+ 3 5))
+    (inc (inc (+ 2 5)))
+    (inc (inc (inc (+ 1 5))))
+    (inc (inc (inc (inc (+ 0 5)))))
+    (inc (inc (inc (inc 5))))
+    (inc (inc (inc 6)))
+    (inc (inc 7))
+    (inc 8)
+    9
+    
+Second case is iterative:
+
+    (+ 4 5)
+    (+ 3 6)
+    (+ 2 7)
+    (+ 1 8)
+    (+ 0 9)
+    9
+    
+## Exercise 1.10 ##
+
+    (A 1 10)
+    (A 0 (A 1 9))
+    (A 0 (A 0 (A 1 8)))
+    (A 0 (A 0 (A 0 (A 1 7))))
+    (A 0 (A 0 (A 0 (A 0 (A 1 6)))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 5))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 4)))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 3))))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 2)))))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 1 1))))))))))    
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 2)))))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 4))))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 8)))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 (A 0 16))))))
+    (A 0 (A 0 (A 0 (A 0 (A 0 32)))))
+    (A 0 (A 0 (A 0 (A 0 64))))
+    (A 0 (A 0 (A 0 128)))
+    (A 0 (A 0 256))
+    (A 0 512)
+    1024
+    2^10 = (2^10)^1
+    
+    (A 2 4)
+    (A 1 (A 2 3))
+    (A 1 (A 1 (A 2 2)))
+    (A 1 (A 1 (A 1 (A 2 1))))
+    (A 1 (A 1 (A 1 2)))
+    (A 1 (A 1 (A 0 (A 1 1))))
+    (A 1 (A 1 (A 0 2)))
+    (A 1 (A 1 4))
+    (A 1 (A 0 (A 1 3)))
+    (A 1 (A 0 (A 0 (A 1 2))))
+    (A 1 (A 0 (A 0 (A 0 (A 1 1)))))
+    (A 1 (A 0 (A 0 (A 0 2))))
+    (A 1 (A 0 (A 0 4)))
+    (A 1 (A 0 8))
+    (A 1 16)
+    ...
+    2^16 = 2^(2^4)
+    
+    (A 3 3)
+    (A 2 (A 3 2))
+    (A 2 (A 2 (A 3 1)))
+    (A 2 (A 2 2))
+    ...
+    (A 2 4)
+    ...
+    2^16 = (2^(2^(2^3))
+    
+    (A 0 n) = 2n
+    (A 1 n) = 2^n
+    (A 2 n) = 2^(2^(2^... n times
+    
+## Exercise 1.11 ##
+
+Recursive:
+
+    (define (f n) 
+        (if (< n 3)
+        n
+        (+ (f (- n 1)) (* 2 (f (- n 2))) (* 3 (f (- n 3))))))
+        
+Iterative:
+
+    (define (f n)
+        (define (f-iter a b c n)
+            (if (< n 3)
+                c
+                (f-iter b c (+ c (* 2 b) (* 3 a)) (- n 1))
+            )
+        )
+        (if (< n 3)
+            n
+            (f-iter 0 1 2 n)))
+        
+## Exercise 1.12 ##
+
+    (define (pascal r c)
+        (cond ((< c 1) 0)
+              ((> c r) 0)
+              ((= r 1) 1)
+              ((= r c) 1)
+              (else (+ (pascal (- r 1) (- c 1))
+                       (pascal (- r 1) c)))))
+                       
+## Exercise 1.13 ##
+
+Too hard for me, see [someone else's solution] (http://www.billthelizard.com/2009/12/sicp-exercise-113-fibonacci-and-golden.html)
+
+## Exercise 1.14 ##
+
+![Process tree for (count-change 11)](1_14.svg)
+
+## Exercise 1.15 ##
+
+a. (p (sine (/ 12.15 3.0))) = (p (sine 4.05))  
+   (p (sine (/ 4.05 3.0))) = (p (sine 1.35))  
+   (p (sine (/ 1.35 3.0))) = (p (sine 0.45))  
+   (p (sine (/ 0.45 3.0))) = (p (sine 0.15))  
+   (p (sine (/ 0.15 3.0))) = (p (sine 0.05)) = (p 0.05)
+   
+   So p is applied 5 times
+
+b. For each multiplication of x by 3, one additional step is added. So growth
+order is logarithmic: Θ(log(n))
