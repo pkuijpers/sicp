@@ -202,3 +202,120 @@ a. (p (sine (/ 12.15 3.0))) = (p (sine 4.05))
 
 b. For each multiplication of x by 3, one additional step is added. So growth
 order is logarithmic: Θ(log(n))
+
+## Exercise 1.16 ##
+
+    (define (fast-exp b n)
+        (define (fast-exp-iter a b n)
+            (cond ((= n 1) a)
+                  ((even? n) (fast-exp-iter a (square b) (/ n 2)))
+                  (else (fast-exp-iter (* a b) b (- n 1)))))
+        (fast-exp-iter 1 b n))
+        
+## Exercise 1.17 ##
+
+    (define (fast-* a b)
+        (cond ((= b 0) 0)
+              ((even? b) (fast-* (double a) (halve b)))
+              (else (+ a (fast-* a (- b 1))))))
+              
+a * b = 2a * b/2 if even  
+a + (a * (b-1)) if odd
+
+Test:
+
+    5 4
+    10 2
+    20 1
+    20 + (20 0)
+    20
+
+    4 3
+    4 + (4 2)
+    4 + (8 1)
+    4 + 8 + (8 0)
+    12
+    
+## Exercise 1.18 ##
+
+a b -> c d n
+a * b -> c + (b * n)
+
+    (define (fast-* a b)
+        (define (fast-iter-* c d n)
+            (cond ((= n 0) c)
+                  ((even? n) (fast-iter-* c (double d) (halve n)))
+                  (else (fast-iter-* (+ c d) d (- b n)))))
+        (fast-iter-* 0 a b))
+        
+Test:
+
+    5 4
+    0 5 4
+    0 10 2
+    0 20 1
+    20 20 0
+    20
+    
+    4 3
+    0 4 3
+    4 4 2
+    4 8 1
+    12 8 0
+    12
+    
+    2 7
+    0 2 7
+    2 2 6
+    2 4 3
+    6 4 2
+    6 8 1
+    14 8 0
+    14
+    
+## Exercise 1.19 - 1.21 ##
+
+Lost after a hard disk crash.
+
+## Exercise 1.22 ##
+
+    (define (search-for-primes start end)
+      (cond ((<= start end)
+        (timed-prime-test start)
+        (search-for-primes (+ start 1) end))))
+
+    1000003 *** 1.0
+    1000033 *** 1.0
+    1000037 *** 1.0
+
+    10000019 *** 4.0
+    10000079 *** 3.0
+    10000103 *** 3.0
+
+    100000007 *** 14.0
+    100000037 *** 12.0
+    100000039 *** 10.0
+
+    1000000007 *** 34.0
+    1000000009 *** 29.0
+    1000000021 *** 30.0
+    
+Factor 10 increase in n results in a factor sqrt(10) ≈ 3.2 in running time.
+
+## Exercise 1.23 ##
+
+    (define (next n)
+      (if (= n 2) 3 (+ n 2)))
+
+    100000007 *** 7.0
+    100000037 *** 6.0
+    100000039 *** 6.0
+
+About twice as fast - as expected.
+
+    1000000007 *** 19.0
+    1000000009 *** 19.0
+    1000000021 *** 19.0
+    
+About 1.5 times as fast, lower than expected. An extra operation is needed to
+determine `next`.
