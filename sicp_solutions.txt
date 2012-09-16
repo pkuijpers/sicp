@@ -319,3 +319,33 @@ About twice as fast - as expected.
     
 About 1.5 times as fast, lower than expected. An extra operation is needed to
 determine `next`.
+
+## Exercise 1.24 ##
+
+O(log n): I would expect the running time to increase by a constant amount
+after a 10-fold increase of n.
+
+    (define (start-prime-test n start-time)
+      (if (fast-prime? n 6)
+        (report-prime (- (current-milliseconds) start-time))
+        (report-smallest-divisor n)))
+        
+    1000003 *** 1.0
+    1000033 *** 1.0
+    1000037 *** 1.0
+    
+    10000019 *** 1.0
+    10000079 *** 0.0
+    10000103 *** 1.0
+    
+    100000007 *** 1.0
+    100000037 *** 0.0
+    100000039 *** 1.0
+    
+    1000000007 *** 1.0
+    1000000009 *** 1.0
+    1000000021 *** 1.0
+    
+Seems to run in about constant time: the constant amount by which the running
+time is increased by a 10-fold increase in n is apparently too small to
+measure.
