@@ -58,4 +58,22 @@
     (timed-prime-test start)
     (search-for-primes (+ start 1) end))))
     
-(search-for-primes 1000000000 1000000200)
+(define (fermat-test-full n)
+    (define (fermat-test-full-it a)
+        (cond ((= a 0) #t)
+            ((= (expmod a n n) a) (fermat-test-full-it (- a 1)))
+            (else #f)))
+    (fermat-test-full-it (- n 1)))
+    
+;(search-for-primes 1000000000 1000000200)
+
+(display (fermat-test-full 8))(display " = #f\n") ; non-primes do not pass
+(display (fermat-test-full 3))(display " = #t\n") ; primes pass the test
+
+; Carmichael numbers: not a prime, but pass the test
+(display (fermat-test-full 561))(display " = #t\n")
+(display (fermat-test-full 1105))(display " = #t\n")
+(display (fermat-test-full 1729))(display " = #t\n")
+(display (fermat-test-full 2465))(display " = #t\n")
+(display (fermat-test-full 2821))(display " = #t\n")
+(display (fermat-test-full 6601))(display " = #t\n")

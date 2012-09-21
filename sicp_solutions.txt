@@ -345,7 +345,33 @@ after a 10-fold increase of n.
     1000000007 *** 1.0
     1000000009 *** 1.0
     1000000021 *** 1.0
-    
+
 Seems to run in about constant time: the constant amount by which the running
 time is increased by a 10-fold increase in n is apparently too small to
 measure.
+
+## Exercise 1.25 ##
+
+The difference is that in this approach `(fast-expt base exp)` is calculated
+before the remainder is taken. In the original approach, the reduction steps
+keep working on the remainder, so the numbers that are used in the remainder
+operation are much smaller. The larger numbers in this approach could be a
+problem for large values of `n`, where the exponent goes beyond the maximum
+value of an integer.
+
+## Exercise 1.26 ##
+
+For each reduction step in `expmod`, `(expmod base (/ exp 2) m)` is now
+executed *twice*. So the exponent is divided by two, but executed twice,
+resulting in a complexity of O(n) instead of O(log n).
+
+## Exercise 1.27 ##
+    (define (fermat-test-full n)
+        (define (fermat-test-full-it a)
+            (cond ((= a 0) #t)
+                ((= (expmod a n n) a) (fermat-test-full-it (- a 1)))
+                (else #f)))
+        (fermat-test-full-it (- n 1)))
+
+All the given numbers pass the test, but have a smallest-divisor greater than
+1.
