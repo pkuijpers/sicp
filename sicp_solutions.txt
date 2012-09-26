@@ -375,3 +375,28 @@ resulting in a complexity of O(n) instead of O(log n).
 
 All the given numbers pass the test, but have a smallest-divisor greater than
 1.
+
+## Exercise 1.28 ##
+
+    ; #t if a is a 'nontrivial square root of 1 module n'
+    (define (nontriv-sqrt-mod? a n)
+      (and (not (= a 1))
+          (not (= a -1))
+          (= (remainder (square a) n) 1)))
+
+    (define (expmod base exp m)
+      (cond ((= exp 0) 1)
+        ((nontriv-sqrt-mod? base m) 0)
+        ((even? exp)
+          (remainder (square (expmod base (/ exp 2) m)) m))
+        (else (remainder (* base (expmod base (- exp 1) m)) m))))
+
+    (define (miller-rabin-test n)
+      (define (try-it a)
+        (= (expmod a (- n 1) n) 1))
+      (try-it (+ 1 (random (- n 1)))))
+      
+`expmod` now returns 0 if `base` is a nontrivial square root of 1 modulo n,
+signaling that n is not a prime. `fast-prime?` now correctly identifies primes
+and non-primes, even the Carmichael numbers (if a large enough number of tries
+is issued, 5 was usually enough).
