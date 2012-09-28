@@ -400,3 +400,24 @@ All the given numbers pass the test, but have a smallest-divisor greater than
 signaling that n is not a prime. `fast-prime?` now correctly identifies primes
 and non-primes, even the Carmichael numbers (if a large enough number of tries
 is issued, 5 was usually enough).
+
+## Exercise 1.29 ##
+
+    ; Approximate integral of function f between a and b with accuracy n 
+    ; using Simpson's rule
+    (define (integral f a b n)
+      (define (h)
+        (/ (- b a) n))
+      (define (y k)
+        (f (+ a (* k (h)))))
+      (define (factor k)
+        (cond ((= k 0) 1)
+          ((= k n) 1)
+          ((even? k) 2)
+          (else 4)))
+      (define (sum k)
+        (cond ((= k 0) (y 0))
+          (else
+            (+ (* (factor k) (y k)) (sum (- k 1)))))
+          )
+      (* (/ (h) 3) (sum n)))
