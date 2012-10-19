@@ -421,3 +421,50 @@ is issued, 5 was usually enough).
             (+ (* (factor k) (y k)) (sum (- k 1)))))
           )
       (* (/ (h) 3) (sum n)))
+      
+## Exercise 1.30 ##
+
+    (define (sum term a next b)
+      (define (iter a result)
+        (if (> a b)
+          result
+          (iter (next a) (+ (term a) result))))
+      (iter a 0))
+      
+## Exercise 1.31 ##
+### a. ###
+
+    (define (product term a next b)
+      (define (iter a result)
+        (if (> a b)
+          result
+          (iter (next a) (* (term a) result))))
+      (iter a 1))
+
+    (define (factorial n)
+        (product identity 1 inc n))
+        
+    (define (pi-approx n)
+      (define (term t)
+        (if (even? t)
+           (/ t (+ t 1))
+           (/ (+ t 1) t)))
+      (* 4 (product term 2 inc n)))
+      
+NB: `pi-approx` doesn't seem to be very efficient: it needs about a 10-fold
+increase in `n` to add 1 digit of significance to the result.
+
+| n     | result           |
+| -     | -                |
+| 10    | 3.00217595455691 |
+| 100   | 3.12607890021541 |
+| 1000  | 3.14002381860059 |
+| 10000 | 3.14143559358986 |
+| 100000 | 3.14157694582264 |
+
+### b. ###
+
+    (define (product-rec term a next b)
+      (if (> a b)
+        1
+        (* (term a) (product-rec term (next a) next b))))
