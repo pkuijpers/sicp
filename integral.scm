@@ -29,29 +29,47 @@
 ;(display (integral cube 0 1 100))
 ;(display "\n")
 
-(define (sum term a next b)
+(define (accumulate combiner null-value term a next b)
   (define (iter a result)
     (if (> a b)
       result
-      (iter (next a) (+ (term a) result))))
-  (iter a 0))
+      (iter (next a) (combiner (term a) result))))
+  (iter a null-value))
+  
+(define (accumulate-rec combiner null-value term a next b)
+  (if (> a b)
+    null-value
+    (combiner (term a) (accumulate-rec combiner null-value term (next a) next b))))
+
+(define (sum term a next b)
+  (accumulate + 0 term a next b))
+  ;(define (iter a result)
+  ;  (if (> a b)
+  ;    result
+  ;    (iter (next a) (+ (term a) result))))
+  ;(iter a 0))
   
 (define (sum-cubes a b)
   (sum cube a inc b))
   
-;(display (sum-cubes 1 10)) ; 3025
+(display (sum-cubes 1 10))(display '/n') ; 3025
+
+
 
 (define (product term a next b)
-  (define (iter a result)
-    (if (> a b)
-      result
-      (iter (next a) (* (term a) result))))
-  (iter a 1))
+  (accumulate * 1 term a next b))
+  ;(define (iter a result)
+  ;  (if (> a b)
+  ;    result
+  ;    (iter (next a) (* (term a) result))))
+  ;(iter a 1))
+
   
 (define (product-rec term a next b)
-  (if (> a b)
-    1
-    (* (term a) (product-rec term (next a) next b))))
+  (accumulate-rec * 1 term a next b))
+  ;(if (> a b)
+  ;  1
+  ;  (* (term a) (product-rec term (next a) next b))))
   
 (display (product-rec identity 1 inc 2))(display "\n"); 1 * 2 = 2
 (display (product-rec identity 1 inc 3))(display "\n"); 1 * 2 * 3 = 6
@@ -76,3 +94,10 @@
 (display (pi-approx 1000))(display "\n");3.14002381860059
 (display (pi-approx 10000))(display "\n");3.14143559358986
 (display (pi-approx 100000))(display "\n");3.14157694582264
+
+(define (accumulate combiner null-value term a next b)
+  (define (iter a result)
+    (if (> a b)
+      result
+      (iter (next a) (combiner (term a) result))))
+  (iter a null-value))
