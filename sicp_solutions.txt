@@ -470,7 +470,7 @@ increase in `n` to add 1 digit of significance to the result.
         (* (term a) (product-rec term (next a) next b))))
         
 ## Exercise 1.32 ##
-### a. ###
+### a ###
 
     (define (accumulate combiner null-value term a next b)
       (define (iter a result)
@@ -485,7 +485,7 @@ increase in `n` to add 1 digit of significance to the result.
     (define (product term a next b)
       (accumulate * 1 term a next b))
       
-### b. ###
+### b ###
 
     (define (accumulate-rec combiner null-value term a next b)
       (if (> a b)
@@ -493,3 +493,30 @@ increase in `n` to add 1 digit of significance to the result.
         (combiner 
             (term a) 
             (accumulate-rec combiner null-value term (next a) next b))))
+            
+## Exercise 1.33 ##
+
+    (define (filtered-accumulate combiner filter null-value term a next b)
+      (define (iter a result)
+        (if (> a b)
+          result
+          (iter (next a) 
+            (combiner 
+              (if (filter a) (term a) null-value) 
+              result))))
+      (iter a null-value))
+      
+### a ###
+
+    (define (sum-square-primes a b)
+      (filtered-accumulate + prime? 0 square a inc b))
+      
+### b ###
+
+    (define (product-relative-primes n)
+      (define (relative-prime? a b)
+        (= 1 (gcd a b)))
+      (define (filter i)
+        (relative-prime? i n))
+      (if (< n 2) 0
+        (filtered-accumulate * filter 1 identity 1 inc (- n 1))))
