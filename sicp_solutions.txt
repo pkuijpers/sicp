@@ -606,3 +606,23 @@ The tricky part is determining the value of d for i:
 
     (e-approx 100)
 _2.71828182845905_
+
+## Exercise 1.39 ##
+
+    (define (tan-cf x k)
+      (define (n i)
+        (if (= i 1) x (* (square x) -1)))
+      (define (d i)
+        (- (* i 2) 1))
+      (cont-frac-iter n d k))
+      
+Convergence is a bit slow:
+
+tan(100) actual value is -0.587213915156929
+
+| k     | result             |
+| -     | -                  |
+| 10    | -0.613762972647002 |
+| 100   | -1.46895929637298  |
+| 1000  | -0.587213915156929 |
+| 10000 | -0.587213915156929 |

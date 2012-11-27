@@ -4,6 +4,9 @@
 
 (define tolerance 0.00001)
 
+(define (square n)
+  (* n n))
+
 (define (average a b)
   (/ (+ a b) 2))
 
@@ -49,4 +52,17 @@
       1))
   (+ 2 (cont-frac-iter (lambda (i) 1.0) d n)))
     
-(println (e-approx 100))
+;(println (e-approx 1000))
+
+(define (tan-cf x k)
+  (define (n i)
+    (if (= i 1) x (* (square x) -1)))
+  (define (d i)
+    (- (* i 2) 1))
+  (cont-frac-iter n d k))
+
+(println "tan 100")  
+(println (tan-cf 100 10))
+(println (tan-cf 100 100))
+(println (tan-cf 100 1000))
+(println (tan-cf 100 10000))
