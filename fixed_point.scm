@@ -6,6 +6,9 @@
 
 (define (square n)
   (* n n))
+  
+(define (cube n)
+  (* n n n))
 
 (define (average a b)
   (/ (+ a b) 2))
@@ -14,7 +17,6 @@
   (define (close-enough? v1 v2)
     (< (abs (- v1 v2)) tolerance))
   (define (try guess)
-    (println guess)
     (let ((next (f guess)))
     (if (close-enough? guess next)
       next
@@ -61,8 +63,35 @@
     (- (* i 2) 1))
   (cont-frac-iter n d k))
 
-(println "tan 100")  
-(println (tan-cf 100 10))
-(println (tan-cf 100 100))
-(println (tan-cf 100 1000))
-(println (tan-cf 100 10000))
+;(println "tan 100")  
+;(println (tan-cf 100 10))
+;(println (tan-cf 100 100))
+;(println (tan-cf 100 1000))
+;(println (tan-cf 100 10000))
+
+(define dx 0.00001)
+
+(define (deriv g)
+  (lambda (x)
+    (/ (- (g (+ x dx)) (g x))
+      dx)))
+
+(define (newton-transform g)
+  (lambda (x)
+    (- x (/ (g x) ((deriv g) x)))))
+
+(define (newtons-method g guess)
+  (fixed-point (newton-transform g) guess))
+
+(define (cubic a b c)
+  (lambda (x)
+    (+ (cube x) (* a (square x)) (* b x) c)))
+    
+(println ((cubic 1 1 1) 2)) ; 8 + 4 + 2 + 1 = 15
+(println ((cubic 1 2 3) 2)) ; 8 + 4 + 4 + 3 = 19
+
+(println "Root of (cubic 1 1 1)")
+(println (newtons-method (cubic 1 1 1) 1)) ; x^3 + x^2 + x + 1 = 0 <=> x = -1
+
+(println "Root of (cubic 1 2 3)")
+(println (newtons-method (cubic 1 2 3) 1)) ; x^3 + x^2 + 2x + 3 = 0 <=> x = -1.27568220364985

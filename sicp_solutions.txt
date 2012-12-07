@@ -626,3 +626,11 @@ tan(100) actual value is -0.587213915156929
 | 100   | -1.46895929637298  |
 | 1000  | -0.587213915156929 |
 | 10000 | -0.587213915156929 |
+
+## Exercise 1.40 ##
+
+`(cubic a b c)` returns a procedure `f` so that `(f x) = x^3 + ax^2 + bx + c`
+
+    (define (cubic a b c)
+      (lambda (x)
+        (+ (cube x) (* a (square x)) (* b x) c)))
