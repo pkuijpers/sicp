@@ -634,3 +634,25 @@ tan(100) actual value is -0.587213915156929
     (define (cubic a b c)
       (lambda (x)
         (+ (cube x) (* a (square x)) (* b x) c)))
+
+## Exercise 1.41 ##
+
+    (define (double f)
+      (lambda (x)
+        (f (f x))))
+        
+    ((double inc) 5) => 5 + 2 = 6
+    (((double double) inc) 5) => 5 + 2^2 = 9
+    (((double (double double)) inc) 5) => 5 + 4^2 = 21
+    
+## Exercise 1.42 ##
+
+    (define (compose f g)
+      (lambda (x)
+        (f (g x))))
+        
+## Exercise 1.43 ##
+
+    (define (repeated f n)
+      (if (= n 1) f
+        (compose f (repeated f (- n 1)))))

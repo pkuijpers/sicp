@@ -95,3 +95,28 @@
 
 (println "Root of (cubic 1 2 3)")
 (println (newtons-method (cubic 1 2 3) 1)) ; x^3 + x^2 + 2x + 3 = 0 <=> x = -1.27568220364985
+
+(define (inc i)
+  (+ i 1))
+
+(define (double f)
+  (lambda (x)
+    (f (f x))))
+    
+(println ((double inc) 4))
+
+(println (((double double) inc) 5))  ; 5 + 4 = 9
+(println (((double (double double)) inc) 5))  ; 5 + 8 = 13
+
+(define (compose f g)
+  (lambda (x)
+    (f (g x))))
+    
+(println ((compose square inc) 6))
+
+(define (repeated f n)
+  (if (= n 1) f
+    (compose f (repeated f (- n 1)))))
+
+(println ((repeated square 1) 5)); 25    
+(println ((repeated square 2) 5)); 625
