@@ -105,8 +105,8 @@
     
 (println ((double inc) 4))
 
-(println (((double double) inc) 5))  ; 5 + 4 = 9
-(println (((double (double double)) inc) 5))  ; 5 + 8 = 13
+; (println (((double double) inc) 5))  ; 5 + 4 = 9
+; (println (((double (double double)) inc) 5))  ; 5 + 8 = 13
 
 (define (compose f g)
   (lambda (x)
@@ -118,5 +118,16 @@
   (if (= n 1) f
     (compose f (repeated f (- n 1)))))
 
-(println ((repeated square 1) 5)); 25    
-(println ((repeated square 2) 5)); 625
+; (println ((repeated square 1) 5)); 25    
+; (println ((repeated square 2) 5)); 625
+
+(define (smooth f)
+  (lambda (x)
+    (/ (+ (f x) (f (+ x dx)) (f (- x dx))) 3)))
+
+(println (sin 1))
+(println ((smooth sin) 1))
+
+; n-fold smoothed function f
+(((repeated smooth 2) sin) 1)
+

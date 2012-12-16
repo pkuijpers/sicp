@@ -656,3 +656,13 @@ tan(100) actual value is -0.587213915156929
     (define (repeated f n)
       (if (= n 1) f
         (compose f (repeated f (- n 1)))))
+
+## Exercise 1.44 ##
+
+    (define (smooth f)
+      (lambda (x)
+        (/ (+ (f x) (f (+ x dx)) (f (- x dx))) 3)))
+
+    ; n-fold smoothed function f
+    (((repeated smooth 2) sin) 1)
+
