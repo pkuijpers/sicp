@@ -131,3 +131,32 @@
 ; n-fold smoothed function f
 (((repeated smooth 2) sin) 1)
 
+(define (average-damp f)
+  (lambda (x) (average x (f x))))
+
+(define (exp x n)
+  (if (zero? n) 1
+    (* x (exp x (- n 1)))))
+
+(define (fourth-root x)
+  (fixed-point ((repeated average-damp 2) (lambda (y) (/ x (cube y)))) 1.0))
+
+(define (fifth-root x)
+  (fixed-point ((repeated average-damp 2) (lambda (y) (/ x (* y y y y)))) 1.0))
+
+(define (log2 x) (/ (log x) (log 2)))
+
+(define (nth-root x n)
+  (fixed-point 
+    ((repeated average-damp (floor (log2 n))) 
+      (lambda (y) (/ x (exp y (- n 1)))))
+    1.0))
+
+(println (fourth-root 3.0))
+(println (nth-root 3.0 4))
+
+(println (fifth-root 3.0))
+(println (nth-root 3.0 5))
+
+(println (nth-root 3.0 200))
+

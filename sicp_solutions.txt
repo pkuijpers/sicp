@@ -666,3 +666,28 @@ tan(100) actual value is -0.587213915156929
     ; n-fold smoothed function f
     (((repeated smooth 2) sin) 1)
 
+## Exercise 1.45 ##
+
+Number of repeated average damping needed for converging:
+
+| n-th root | number of average damping |
+| -         | -                         |
+| 4         | 2                         |
+| 8         | 3                         |
+| 31        | 3                         |
+| 32        | 3                         |
+| 67        | 3                         |
+| 68        | 4                         |
+| 128       | 4                         |
+| 200       | 5                         |
+
+It's some logarithmic scale, not quite sure what it is. 
+[Some solutions](http://community.schemewiki.org/?sicp-ex-1.45) suggest using floor(log2(n)).
+
+    (define (log2 x) (/ (log x) (log 2)))
+
+    (define (nth-root x n)
+      (fixed-point 
+        ((repeated average-damp (floor (log2 n))) 
+          (lambda (y) (/ x (exp y (- n 1)))))
+        1.0))
