@@ -160,3 +160,32 @@
 
 (println (nth-root 3.0 200))
 
+(define (iterative-improve good-enough? improve)
+  (lambda (guess)
+    (if (good-enough? guess) guess
+      ((iterative-improve good-enough? improve) (improve guess)))))
+
+(define (sqrt x)
+  ((iterative-improve
+    (lambda (guess)
+      (< (abs (- (square guess) x)) 0.001))
+    (lambda (guess)
+      (average guess (/ x guess)))
+    ) 1.0))
+
+(define (fixed-point-new f first-guess)
+  ((iterative-improve
+    ; good-enough?
+    (lambda (guess)
+      (let ((next (f guess)))
+        (< (abs (- guess next)) tolerance)))
+    ; improve
+    (lambda (guess)
+      (f guess)))
+  first-guess))
+
+(println "Exercise 1.46")
+(println (sqrt 2.0))
+
+(println (fixed-point sin 1.0))
+(println (fixed-point-new sin 1.0))
