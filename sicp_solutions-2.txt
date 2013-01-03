@@ -7,3 +7,32 @@
 			(make-rat (* -1 n) (* -1 d))
 			(let ((g (abs (gcd n d))))
 		 		(cons (/ n g) (/ d g)))))
+
+## Exercise 2.2 ##
+	(define (midpoint-segment s)
+		(make-point (/ (- (x-point (end-segment s)) (x-point (start-segment s))) 2)
+			(/ (- (y-point (end-segment s)) (y-point (start-segment s))) 2)))
+
+## Exercise 2.3 ##
+Perimeter and area are calculated in terms of width and height of the rectangle:
+
+	(define (perimeter rect)
+		(+ (* 2 (height rect)) (* 2 (width rect))))
+	(define (area rect)
+		(* (height rect) (width rect)))
+
+One representation, based on an origin point and scalars for width and height:
+
+	(define (make-rect origin height width)
+		(cons origin (cons height width)))
+	(define (origin rect) (car rect))
+	(define (height rect) (car (cdr rect)))
+	(define (width rect) (cdr (cdr rect)))
+
+Another, where the rectangle is defined by its top-left and bottom-right point:
+
+	(define (make-rect topleft bottomright)
+		(cons topleft bottomright))
+	(define (origin rect) (car rect))
+	(define (height rect) (abs (- (y-point (cdr rect)) (y-point (car rect)))))
+	(define (width rect) (abs (- (x-point (cdr rect)) (x-point (car rect)))))
