@@ -63,3 +63,44 @@
 (println (width r2)) ; 15
 (println (perimeter r2)) ; 40
 (println (area r2)) ; 75
+
+; Pairs
+; (define (cons x y)
+; 	(lambda (m) (m x y)))
+
+; (define (car z)
+; 	(z (lambda (p q) p)))
+; (define (cdr z)
+; 	(z (lambda (p q) q)))
+
+; (println (car (cons 1 2))) ; 1
+; (println (cdr (cons 1 2))) ; 2()
+
+; Pairs using arithmetic operations
+(println "Ex. 2.4")
+
+(define (cons x y)
+	(* (expt 2 x) (expt 3 y)))
+
+; Determine the number of times n is dividable by f
+(define (num-divided n f)
+	(if (= (remainder n f) 0)
+		(+ 1 (num-divided (/ n f) f))
+		0))
+
+(define (car z)
+	(num-divided (/ z (expt 3 (num-divided z 3))) 2))
+(define (cdr z)
+	(num-divided (/ z (expt 2 (num-divided z 2))) 3))
+
+(println (cons 1 2)) ; 18
+(println (cons 1 1)) ; 6
+(println (cons 2 2)) ; 36
+(println (cons 2 1)) ; 12
+
+(println (num-divided 9 3)) ; 2
+(println (num-divided 1024 2)) ; 10
+
+(println (car (cons 10 20))) ; 10
+(println (cdr (cons 10 20))) ; 20
+

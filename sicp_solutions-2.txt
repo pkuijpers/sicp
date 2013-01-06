@@ -36,3 +36,29 @@ Another, where the rectangle is defined by its top-left and bottom-right point:
 	(define (origin rect) (car rect))
 	(define (height rect) (abs (- (y-point (cdr rect)) (y-point (car rect)))))
 	(define (width rect) (abs (- (x-point (cdr rect)) (x-point (car rect)))))
+
+## Exercise 2.4 ##
+`cons` returns a procedure that takes another procedure as arguments and applies `x` and `y` to that
+procedure. `cdr` and `cons` execute that procedure with a procedure as argument that returns the first 
+(for car) or second (for cdr) argument.
+
+	(define (cdr z)
+		(z (lambda (p q) q)))
+
+## Exercise 2.5 ##
+I spent some time trying to find a simple method to determine a and b from 2^a*2^b to finally find that
+there is none. The solution is to iteratively find the number of times n is divisable by 2 or 3. Thanks to [Bill the Lizard](http://www.billthelizard.com/2010/10/sicp-25-representing-pairs-as-product.html).
+
+	(define (cons x y)
+		(* (expt 2 x) (expt 3 y)))
+
+	; Determine the number of times n is dividable by f
+	(define (num-divided n f)
+		(if (= (remainder n f) 0)
+			(+ 1 (num-divided (/ n f) f))
+			0))
+
+	(define (car z)
+		(num-divided (/ z (expt 3 (num-divided z 3))) 2))
+	(define (cdr z)
+		(num-divided (/ z (expt 2 (num-divided z 2))) 3))
