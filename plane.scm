@@ -104,3 +104,26 @@
 (println (car (cons 10 20))) ; 10
 (println (cdr (cons 10 20))) ; 20
 
+; Exercise 2.6
+(println ((lambda (x) x) 1))
+
+(define zero (lambda (f) (lambda (x) x))) ; equiv to (define (zero f) (lambda (x) x))
+(println zero) ; procedure (zero f)
+
+(define (add-1 n)
+	(lambda (f) (lambda (x) (f (n f) x))))
+(println (add-1 zero))	; procedure (? f)
+
+; (zero f) <=> (lambda (x) x)
+
+; (define one (add-1 zero))
+; (define one (lambda (f) (lambda (x) (f (lambda (x) x) x))))
+; simplify
+(define one (lambda (f) (lambda (x) (f x))))
+
+; (define two (add-1 one))
+; (define two (lambda (f) (lambda (x) (f (one f) x))))
+; (define two (lambda (f) (lambda (x) (f ((lambda (f) (lambda (x) (f x))) f) x))))
+; simplify
+(define two (lambda (f) (lambda (x) (f (f x) x))))
+(println two)

@@ -62,3 +62,23 @@ there is none. The solution is to iteratively find the number of times n is divi
 		(num-divided (/ z (expt 3 (num-divided z 3))) 2))
 	(define (cdr z)
 		(num-divided (/ z (expt 2 (num-divided z 2))) 3))
+
+## Exercise 2.6 ##
+Mind-boggling. Got to:
+
+	; (define one (add-1 zero))
+	(define one (lambda (f) (lambda (x) (f (lambda (x) x) x))))
+
+then gave up and looked up the [answer from Bill the Lizard](http://www.billthelizard.com/2010/10/sicp-26-church-numerals.html). It didn't occur to me that the previous method could be simplified to 
+
+	(define one (lambda (f) (lambda (x) (f x))))
+
+## Exercise 2.7 ##
+Easy.
+	(define (upper-bound x) (cdr x))
+	(define (lower-bound x) (car x))
+
+## Exercise 2.8 ##
+	(define (subtract-interval x y)
+  	(make-interval (- (lower-bound x) (upper-bound y))
+                   (- (upper-bound x) (lower-bound y))))
