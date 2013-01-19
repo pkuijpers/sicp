@@ -29,6 +29,8 @@
                  (max p1 p2 p3 p4))))
 
 (define (div-interval x y)
+  (if (and (< (lower-bound y) 0) (> (upper-bound y) 0))
+    (error "Divide by interval spanning zero" y))
   (mul-interval x
     (make-interval (/ 1.0 (upper-bound y))
                    (/ 1.0 (lower-bound y)))))
@@ -43,3 +45,10 @@
 (print-interval (div-interval int2 int1))
 (println "Test")
 (print-interval (subtract-interval int1 int1))
+
+(print-interval (mul-interval (make-interval 1 2) (make-interval 2 4))) ; = 2 to 8, width 0.5 * width 1 => width 6
+(print-interval (mul-interval (make-interval 2 3) (make-interval 3 5))) ; = 6 to 15, width 0.5 * width 1 => width 4.5
+
+; Test divide by interval spanning zero
+(print-interval (div-interval int1 (make-interval 1 2))) ; OK
+(print-interval (div-interval int1 (make-interval -1 1))) ; Error

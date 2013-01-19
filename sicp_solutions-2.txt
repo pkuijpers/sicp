@@ -82,3 +82,36 @@ Easy.
 	(define (subtract-interval x y)
   	(make-interval (- (lower-bound x) (upper-bound y))
                    (- (upper-bound x) (lower-bound y))))
+
+## Exercise 2.9 ##
+
+Interval 1: l1 to u1
+Width interval 1 = (u1-l1)/2 = w1
+Interval 2: l2 to u2 
+Width interval 2: (u2-l2)/2 = w2
+Sum: (l1 + l2) to (u1 + u2)
+Width of sum is ((u1+u2)-(l1+l2))/2
+<=> (u1+u2-l1-l2)/2
+<=> (u1-l1+u2-l2)/2
+<=> (u1-l1)/2 + (u2-l2)/2
+<=> w1 + w2
+
+Same goes for difference: (l1-u2) to (u1-l2)
+Width of difference is ((u1-l2)-(l1-u2))/2
+<=> (u1-l2-l1+u2)/2 <=> (u1-l1+u2-l2)/2 <=> w1 + w2
+
+Width of multiplication is not a function of the widths of the arguments:
+(1 to 2) * (2 to 4) = (2 to 8), width = 3
+(2 to 3) * (3 to 5) = (6 to 15), width =  4.5 while the widths of the arguments are the same as previous.
+
+## Exercise 2.10 ##
+When we divide by an interval that spans zero it could be a divide by zero. Therefore we can't divide by
+an interval that includes zero.
+
+	(define (div-interval x y)
+	  (if (and (< (lower-bound y) 0) (> (upper-bound y) 0))
+	    (error "Divide by interval spanning zero" y))
+	  (mul-interval x
+	    (make-interval (/ 1.0 (upper-bound y))
+	                   (/ 1.0 (lower-bound y)))))
+
