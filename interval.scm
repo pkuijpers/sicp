@@ -5,6 +5,10 @@
 
 (define (make-interval a b) (cons a b))
 
+(define (equal-interval? a b)
+  (and (= (lower-bound a) (lower-bound b))
+       (= (upper-bound a) (upper-bound b))))
+
 (define (upper-bound x) (cdr x))
 (define (lower-bound x) (car x))
 
@@ -86,6 +90,21 @@
     (make-interval (/ 1.0 (upper-bound y))
                    (/ 1.0 (lower-bound y)))))
 
+(define (make-center-width c w)
+  (make-interval (- c w) (+ c w)))
+
+(define (make-center-percent c p)
+  (make-center-width c (* (/ p 100) c)))
+
+(define (center i)
+  (/ (+ (lower-bound i) (upper-bound i)) 2))
+
+(define (width i)
+  (/ (- (upper-bound i) (lower-bound i)) 2))
+
+(define (percent i)
+  (* (/ (- (center i) (lower-bound i)) (center i)) 100))
+
 ; Test
 (define int1 (make-interval 1 2))
 (define int2 (make-interval 0.8 1.2))
@@ -116,3 +135,10 @@
 (check (mul-interval (make-interval -7 2) (make-interval -3 5)) => (make-interval -35 21))
 (check (mul-interval (make-interval 1 2) (make-interval -3 5)) => (make-interval -6 10))
 
+; Exercise 2.12
+(check (make-center-percent 0 0) => (make-interval 0 0))
+(check (make-center-percent 1 0) => (make-interval 1 1))
+(check (make-center-percent 1 100) => (make-interval 0 2))
+(check (make-center-percent 10 10) => (make-interval 9.0 11.0))
+(check (center (make-center-percent 10 5)) => 10.0)
+(check (percent (make-center-percent 10 5)) => 5.0)

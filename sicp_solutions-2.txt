@@ -165,3 +165,10 @@ an interval that includes zero.
            (make-interval (* (upper-bound x) (upper-bound y))
                           (* (lower-bound x) (lower-bound y))))))
 
+## Exercise 2.12 ##
+
+    (define (make-center-percent c p)
+      (make-center-width c (* (/ p 100) c)))
+
+    (define (percent i)
+      (* (/ (- (center i) (lower-bound i)) (center i)) 100))
