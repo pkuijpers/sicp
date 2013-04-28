@@ -172,3 +172,22 @@ an interval that includes zero.
 
     (define (percent i)
       (* (/ (- (center i) (lower-bound i)) (center i)) 100))
+
+## Exercise 2.13 ##
+
+    (a ± i%) * (b ± j%)
+    
+    Lower bound = (a - i%) * (b - j%)
+    <=> (a - ia/100) * (b - jb/100)
+    <=> a * b - (iba/100) - (jba/100) + (ijab/10000)
+    ≈ a * b - (iba/100) - (jba/100)
+    <=> a * b - ((j+i)ba/100)
+    <=> a * b - (j + i)%
+
+Same way for lower bound:
+    
+    a * b + (j + i)%
+
+So:
+    
+    (a ± i%) * (b ± j%) ≈ (a * b) ± (i + j)%
